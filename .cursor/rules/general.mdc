@@ -1,5 +1,47 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+# 通用开发规范(general)
+
+本项目为基于 Nuxt、TailwindCSS、Nuxt-UI 的 SUI 区块链 DApp,以下为全局开发约定和最佳实践, Cursor 应始终遵循：
+
+---
+
+## 特别要求
+（重要！）如遇需要查找文档的内容，请 use context7 查找相关文档，尤其在 vue，nuxt，tailwindcss、nuxt-ui、sui 上
+
+## 1. 组件开发
+- 所有 Vue 组件应使用 PascalCase 命名，且每个组件职责单一。
+- 组件拆分优先，避免单文件过大。
+- 组件 props 必须定义类型和默认值。
+- 事件命名采用 kebab-case。
+- 应该尽可能去使用 Nuxt-UI 内的组件
+- 复用性强的 UI 组件优先使用 Nuxt-UI, 若需自定义, 风格需与 Nuxt-UI 保持一致。
+
+## 2. 样式规范
+- 样式优先使用Nuxt-UI的可配置项, 如需自定义样式, 请使用 TailwindCSS 工具类，避免自定义 CSS。
+- 如需自定义样式，必须使用 `@apply` 并遵循 BEM 命名。
+- 禁止全局样式污染，样式作用域仅限当前组件。
+- 颜色、间距、字体等设计变量统一使用 Tailwind 配置。
+
+## 3. 业务逻辑
+- 业务逻辑应拆分为 composable(`useXXX.ts`)或 store, 避免在组件内直接处理复杂逻辑。
+- 区块链相关操作需有错误处理和 loading 状态反馈。
+
+## 4. API 交互
+- API 请求统一封装，返回 Promise, 类型安全。
+- 错误处理必须标准化，前端需有用户友好提示。
+
+## 5. 代码风格
+- 全项目使用 TypeScript, 类型定义完整。
+- 变量、函数、文件命名统一使用英文，遵循 camelCase/PascalCase/kebab-case 规范。
+- 每个函数只做一件事，复杂逻辑拆分为多个小函数。
+- 重要函数、模块、接口需有 JSDoc 注释。
+
+## 7. 目录结构
+目录结构遵循 nuxt 定义的规范
+
+---
+> 本规范为项目开发的基础约束，所有代码提交前请自查是否符合上述要求。
