@@ -1,8 +1,8 @@
 <template>
     <UApp>
-        <main class="p-4 pb-16 min-h-dvh">
+        <UContainer as="main" class="p-4 pb-16 min-h-dvh">
             <slot />
-        </main>
+        </UContainer>
         <DockBar />
     </UApp>
 </template>

@@ -9,6 +9,7 @@
         "class",
         "ui"
     ],
+    "tailwindCSS.experimental.configFile": "assets/css/main.css",
     "tailwindCSS.experimental.classRegex": [
         [
             "ui:\\s*{([^)]*)\\s*}",

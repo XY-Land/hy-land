@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import User from '~/components/me/user'
+import User from '~/components/me/user.vue'
+import { useDeepbookClient } from '~/composables/deepbookClient'
+
 definePageMeta({
     layout: 'with-dock',
+    middleware: 'auth'
 })
+
 const {
     label,
     address,

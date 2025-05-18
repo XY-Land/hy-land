@@ -39,7 +39,7 @@ const tabs = ref<TabsItem[]>([
 
 <template>
     <UTabs
-        class="fixed bottom-0 w-full"
+        class="fixed bottom-0 w-full z-2"
         as="nav"
         v-model:model-value="currentValue"
         :content="false"

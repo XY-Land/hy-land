@@ -10,7 +10,7 @@ alwaysApply: true
 ---
 
 ## 特别要求
-（重要！）如遇需要查找文档的内容，请 use context7 查找相关文档，尤其在 vue，nuxt，tailwindcss、nuxt-ui、sui 上
+（重要！）在适合的时候，请 use context7 查找相关文档，尤其在 vue、nuxt、tailwindcss、nuxt-ui、sui 上
 
 ## 1. 组件开发
 - 所有 Vue 组件应使用 PascalCase 命名，且每个组件职责单一。
