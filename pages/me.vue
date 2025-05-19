@@ -7,12 +7,6 @@ definePageMeta({
     middleware: 'auth'
 })
 
-const {
-    label,
-    address,
-    scheme
-} = useChainAccount()
-
 const accordionItems = [
     {
         label: 'Funding Account',
@@ -35,8 +29,8 @@ const accordionItems = [
             <User />
             <div class="ml-auto">
                 <div class="flex gap-2">
-                    <UButton color="info" variant="outline">Logout</UButton>
-                    <UButton color="info" variant="outline">Switch</UButton>
+                    <UButton color="info" icon="i-heroicons-arrow-right-on-rectangle" variant="outline" @click="navigateTo('/login')" />
+                    <!-- <UButton color="info" variant="outline">Switch</UButton> -->
                 </div>
             </div>
         </div>

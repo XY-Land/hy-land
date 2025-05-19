@@ -10,18 +10,18 @@ import {  } from '@mysten/wallet-standard'
         </template>
         <template #default>
             <div class="flex gap-4">
-                <UButton size="xl" variant="ghost" color="neutral">
+                <UButton disabled size="xl" variant="ghost" color="neutral">
                     <UIcon name="logos:google-icon" />
                     Google
                 </UButton>
-                <UButton size="xl" variant="ghost" color="neutral">
+                <UButton disabled size="xl" variant="ghost" color="neutral">
                     <UIcon v-color-invert name="logos:apple" />
                     Apple
                 </UButton>
-                <UButton size="xl" variant="ghost" color="neutral">
+                <!-- <UButton size="xl" variant="ghost" color="neutral">
                     <UIcon v-color-invert name="logos:github-icon" />
                     GitHub
-                </UButton>
+                </UButton> -->
             </div>
         </template>
     </UCard>

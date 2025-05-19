@@ -48,7 +48,6 @@ export class ChainAccount<
         this.switch = this.proxyCall("switch");
         this.disconnect = this.proxyCall("disconnect");
     }
-
     public async signAndExecuteTransaction(opts: {
         tx: Transaction;
         executingOptions?: SuiTransactionBlockResponseOptions;
