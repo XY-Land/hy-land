@@ -21,7 +21,6 @@
 <script lang="ts" setup>
 import { Transaction } from '@mysten/sui/transactions'
 import type { BalanceInfo } from './type'
-import type { DynamicFieldInfo } from '@mysten/sui/client'
 import { USkeleton } from '#components'
 
 const client = useSuiClient()
@@ -29,70 +28,72 @@ const chainAccount = useChainAccount()
 const dbc = useDeepbookClient()
 const tradingAccount = useTradingAccount()
 
-const { state: balances, isLoading, execute: refresh } = useAsyncState<BalanceInfo[]>(async () => {
-    if (!tradingAccount || !tradingAccount.value.balanceContainerId) {
-        return []
-    }
-    let cursor: string | undefined = undefined
-    let dfs: DynamicFieldInfo[] = []
-    do {
-        const rst = await client.getDynamicFields({
-            parentId: tradingAccount.value.balanceContainerId,
-            cursor,
-        })
+const { state: balances, isLoading, execute: refresh } = useTradingAssets()
+onMounted(refresh)
+// const { state: balances, isLoading, execute: refresh } = useAsyncState<BalanceInfo[]>(async () => {
+//     if (!tradingAccount || !tradingAccount.value.balanceContainerId) {
+//         return []
+//     }
+//     let cursor: string | undefined = undefined
+//     let dfs: DynamicFieldInfo[] = []
+//     do {
+//         const rst = await client.getDynamicFields({
+//             parentId: tradingAccount.value.balanceContainerId,
+//             cursor,
+//         })
 
-        if (rst.hasNextPage && rst.nextCursor) {
-            cursor = rst.nextCursor
-        } else {
-            cursor = undefined
-        }
+//         if (rst.hasNextPage && rst.nextCursor) {
+//             cursor = rst.nextCursor
+//         } else {
+//             cursor = undefined
+//         }
 
-        dfs.push(...rst.data)
-    } while (cursor)
+//         dfs.push(...rst.data)
+//     } while (cursor)
 
-    let balances: BalanceInfo[] = []
-    for (const df of dfs) {
-        const rst = await client.getDynamicFieldObject({
-            parentId: tradingAccount.value.balanceContainerId,
-            name: df.name,
-        })
-        if (rst.error || !rst.data) {
-            continue
-        }
+//     let balances: BalanceInfo[] = []
+//     for (const df of dfs) {
+//         const rst = await client.getDynamicFieldObject({
+//             parentId: tradingAccount.value.balanceContainerId,
+//             name: df.name,
+//         })
+//         if (rst.error || !rst.data) {
+//             continue
+//         }
 
-        if (!rst.data.content || rst.data.content.dataType !== 'moveObject') {
-            continue
-        }
+//         if (!rst.data.content || rst.data.content.dataType !== 'moveObject') {
+//             continue
+//         }
 
-        const testCoinType = /balance_manager::BalanceKey<(.*)>/gm.exec(
-            (rst.data.content.fields as any).name.type
-        )
-        if (!testCoinType?.[1]) {
-            continue
-        }
+//         const testCoinType = /balance_manager::BalanceKey<(.*)>/gm.exec(
+//             (rst.data.content.fields as any).name.type
+//         )
+//         if (!testCoinType?.[1]) {
+//             continue
+//         }
 
-        const coinType = testCoinType[1]
-        const balanceValue = BigInt((rst.data.content.fields as any).value)
+//         const coinType = testCoinType[1]
+//         const balanceValue = BigInt((rst.data.content.fields as any).value)
 
-        const coinMetadata = await client.getCoinMetadata({
-            coinType,
-        })
-        if (!coinMetadata) {
-            continue
-        }
+//         const coinMetadata = await client.getCoinMetadata({
+//             coinType,
+//         })
+//         if (!coinMetadata) {
+//             continue
+//         }
 
-        balances.push({
-            coinDecimals: coinMetadata.decimals,
-            coinName: coinMetadata.name,
-            coinSymbol: coinMetadata.symbol,
-            coinType,
-            totalBalance: balanceValue,
-        })
-    }
+//         balances.push({
+//             coinDecimals: coinMetadata.decimals,
+//             coinName: coinMetadata.name,
+//             coinSymbol: coinMetadata.symbol,
+//             coinType,
+//             totalBalance: balanceValue,
+//         })
+//     }
 
 
-    return balances
-}, [])
+//     return balances
+// }, [])
 
 function createResolveCoinToTransfer(balance: BalanceInfo) {
     return async (tx: Transaction, amount: bigint) => {

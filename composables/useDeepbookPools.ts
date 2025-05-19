@@ -1,4 +1,4 @@
-type PoolInfo = {
+export type DeepbookPoolInfo = {
     pool_id: string,
     pool_name: string,
     base_asset_id: string,
@@ -10,5 +10,5 @@ type PoolInfo = {
 }
 
 export default function(){
-    return useFetch<PoolInfo[]>('https://deepbook-indexer.mainnet.mystenlabs.com/get_pools')
+    return useFetch<DeepbookPoolInfo[]>('https://deepbook-indexer.mainnet.mystenlabs.com/get_pools')
 }

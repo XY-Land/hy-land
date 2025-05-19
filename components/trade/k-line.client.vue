@@ -3,11 +3,11 @@ import { init, dispose, type Chart, type LoadDataCallback } from 'klinecharts'
 
 const props = defineProps({
     poolId: {
-        default: '0xe05dafb5133bcffb8d59f4e12465dc0e9faeaa05e3e342a08fe135800e3e4407',
-        type: String
+        type: String,
+        required: true
     },
     timeframe: {
-        default: '1min',
+        default: 'hour',
         type: String as PropType<'1min' | '5min' | '10min' | '30min' | 'hour' | '4hour'>
     }
 })
@@ -20,9 +20,6 @@ const loadMore: LoadDataCallback = ({
     data,
     type
 }) => {
-
-    console.log('load more:', data, type);
-
     if (type === 'forward') {
         // 加载之前的数据
         const { from, to } = getLoadingTimeRange(100, data!.timestamp)
@@ -40,7 +37,20 @@ const loadMore: LoadDataCallback = ({
     }
 }
 
+useResizeObserver(klineChart, (entries) => {
+    const { contentRect: { height } } = entries[0]
+    if (klineChart.value) {
+        klineChart.value.style.height = `${height}px`
+        chart.value?.resize()
+    }
+})
+
 onMounted(() => {
+    if (klineChart.value) {
+        const height = klineChart.value.clientHeight
+        klineChart.value.style.height = `${height}px`
+    }
+
     const chart_ = init(klineChart.value!, {
         // locale: 'en-US',
         // timezone: 'Asia/Shanghai'

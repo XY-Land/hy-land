@@ -8,6 +8,9 @@ const emit = defineEmits<{
 
 const props = defineProps(TransferCoinProps)
 
+const fundingAssets = useFundingAssets()
+const tradingAssets = useTradingAssets()
+
 const tabs = ref([
     {
         label: 'To Another Wallet',
@@ -116,6 +119,13 @@ async function doTransfer() {
     await chainAccount.signAndExecuteTransaction({
         tx,
     })
+
+    // refresh assets
+    if (currentTab.value === 'trading-account') {
+        tradingAssets.execute()
+    } else if (currentTab.value === 'funding-account') {
+        fundingAssets.execute()
+    }
 
     emit('close', true)
 }

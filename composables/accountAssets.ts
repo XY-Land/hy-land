@@ -1,5 +1,5 @@
+import { normalizeStructTag } from '@mysten/sui/utils'
 import type { BalanceInfo } from '~/components/me/type'
-import type { UseAsyncStateReturn } from '@vueuse/core'
 import type { DynamicFieldInfo } from '@mysten/sui/client'
 
 
@@ -25,8 +25,8 @@ export const createFundingAssets = () => useAsyncState<Record<string, BalanceInf
 
         if (!metadata) continue
 
-        rstObj[balance.coinType] = {
-            coinType: balance.coinType,
+        rstObj[normalizeStructTag(balance.coinType)] = {
+            coinType: normalizeStructTag(balance.coinType),
             coinIcon: metadata.iconUrl,
             coinSymbol: metadata.symbol,
             coinName: metadata.name,
@@ -89,7 +89,7 @@ export const createTradingAssets = () => useAsyncState<Record<string, BalanceInf
             continue
         }
 
-        const coinType = testCoinType[1]
+        const coinType = normalizeStructTag(testCoinType[1])
         const balanceValue = BigInt((rst.data.content.fields as any).value)
 
         const coinMetadata = await client.getCoinMetadata({

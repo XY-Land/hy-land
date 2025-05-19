@@ -8,6 +8,7 @@ import {
 } from "@mysten/sui/keypairs/passkey";
 import type { Transaction } from "@mysten/sui/transactions";
 import passkeyIcon from "assets/svg/passkey-icon.svg";
+import { toast } from "#build/ui";
 
 function getPasskeyProvider() {
     return new BrowserPasskeyProvider("xy-land passkey account", {
@@ -95,11 +96,28 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
     }
 
     override async signTransaction(tx: Transaction) {
-        return await this.keypair.signTransaction(
-            await tx.build({
-                client: this.client,
-                onlyTransactionKind: true,
+        const toast = useToast()
+
+        const built = await tx.build({
+            client: this.client,
+            onlyTransactionKind: true,
+        })
+
+        try {
+            await this.client.dryRunTransactionBlock({
+                transactionBlock: built,
             })
+        } catch (error) {
+            toast.add({
+                title: 'Failed to dry-run transaction',
+                description: error as any,
+                color: 'error',
+            })
+            throw error
+        }
+
+        return await this.keypair.signTransaction(
+            built
         );
     }
 

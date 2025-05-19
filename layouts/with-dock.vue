@@ -1,5 +1,5 @@
 <template>
-    <UContainer as="main" class="p-4 pb-16 min-h-dvh">
+    <UContainer as="main" class="pb-16 pt-4 lg:pt-8 min-h-dvh flex flex-col">
         <slot />
     </UContainer>
     <DockBar />

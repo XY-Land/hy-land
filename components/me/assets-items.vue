@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { Transaction } from '@mysten/sui/transactions';
 import type { BalanceInfo } from './type';
-defineProps({
+const props = defineProps({
     balances: {
-        type: Array as PropType<BalanceInfo[]>,
+        type: Object as PropType<Record<string, BalanceInfo>>,
         required: true,
     },
     createResolveCoinToTransfer: {
@@ -21,11 +21,13 @@ defineProps({
 })
 
 defineEmits(['refresh'])
+
+const balances = computed(() => Object.values(props.balances))
 </script>
 <template>
     <ul class="flex flex-col gap-4">
-        <template v-for="balance in balances" :key="balance.coinType">
-            <li v-if="balance.totalBalance > 1n" as="li" class="flex items-center justify-center gap-4 w-full">
+        <template v-for="balance in balances.values()" :key="balance.coinType">
+            <li v-if="formatFromDecimals(balance.totalBalance, balance.coinDecimals) !== '0'" as="li" class="flex items-center justify-center gap-4 w-full">
                 <template v-if="balance.coinIcon">
                     <img class="w-8 h-8 rounded-full" :src="balance.coinIcon" :alt="balance.coinType">
                 </template>

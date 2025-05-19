@@ -1,35 +1,40 @@
 <script lang="ts" setup>
-type ValueType = {
-    poolKey: string,
-    poolId: string
-}
-
-defineProps({
-    selectedPool: {
-        type: Object as PropType<ValueType>,
-        required: true
+const props = defineProps({
+    modelValue: {
+        type: Object as PropType<DeepbookPoolInfo | undefined>,
     }
 })
 
+const modelValue = useVModel(props, 'modelValue')
+
 const emit = defineEmits<{
-    (e: 'update:selectedPool', value: ValueType): void
+    (e: 'update:modelValue', value: DeepbookPoolInfo): void
 }>()
 
-const { data, pending } = useDeepbookPools()
+const pools = useDeepbookPools()
+const { data, pending } = pools
 
 const items = computed(() => {
     return data.value?.map(pool => ({
         label: pool.pool_name,
-        value: {
-            poolKey: pool.pool_name,
-            poolId: pool.pool_id
-        }
+        value: pool
     }))
+})
+
+onMounted(async () => {
+    await pools
+    if (!props.modelValue && data.value) {
+        const item = data.value.find(item => item.pool_name === 'SUI_USDC')
+        if (item) {
+            emit('update:modelValue', item)
+        }
+    }
+    
 })
 </script>
 
 <template>
-    <USelectMenu :search-input=true :default-value="selectedPool" value-key="value" @update:model-value="emit('update:selectedPool', $event)" :items="items"
+    <USelectMenu v-model:model-value="modelValue" :search-input=true value-key="value" :items="items"
         :loading="pending" :disabled="pending" 
         variant="ghost"
     />
