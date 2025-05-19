@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     },
     modules: [
         // '@nuxt/content',
-        // '@nuxt/eslint',
+        // '@nuxt/eslint',\
+        '@formkit/auto-animate/nuxt',
         '@nuxt/icon',
         '@nuxt/image',
         '@nuxt/ui-pro',
@@ -34,14 +35,14 @@ export default defineNuxtConfig({
     ssr: false,
     devtools: { enabled: true },
     compatibilityDate: '2024-11-01',
-    eslint: {
-        config: {
-            stylistic: {
-                blockSpacing: true,
-                indent: 4,
-            },
-        },
-    },
+    // eslint: {
+    //     config: {
+    //         stylistic: {
+    //             blockSpacing: true,
+    //             indent: 4,
+    //         },
+    //     },
+    // },
     devServer: {
         host: '[::]',
     },

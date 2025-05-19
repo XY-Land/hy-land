@@ -1,10 +1,8 @@
 <template>
-    <UApp>
-        <UContainer as="main" class="p-4 pb-16 min-h-dvh">
-            <slot />
-        </UContainer>
-        <DockBar />
-    </UApp>
+    <UContainer as="main" class="p-4 pb-16 min-h-dvh">
+        <slot />
+    </UContainer>
+    <DockBar />
 </template>
 
 <script lang="ts" setup>

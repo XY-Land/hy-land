@@ -1,5 +1,5 @@
 import type { Transaction } from "@mysten/sui/transactions";
-import type { SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
+import type { SuiClient, SuiTransactionBlockResponseOptions } from "@mysten/sui/client";
 import type { BaseChainAccountResolver } from "~/utils/sui/accountResolver/base";
 
 export const chainAccountSymbol: InjectionKey<ChainAccount> =
@@ -9,6 +9,7 @@ export class ChainAccount<
     T extends BaseChainAccountResolver = BaseChainAccountResolver
 > {
     private provider: Ref<T | undefined>;
+    readonly client: SuiClient;
     readonly address: ComputedRef<string | undefined>;
     readonly accounts: ComputedRef<string[] | undefined>;
     readonly scheme: ComputedRef<string | undefined>;
@@ -30,7 +31,10 @@ export class ChainAccount<
         }) as any;
     }
 
-    constructor() {
+    constructor(opts: {
+        client: SuiClient
+    }) {
+        this.client = opts.client;
         this.provider = shallowRef(undefined);
         this.isConnected = computed(() => !!this.provider.value);
         this.address = computed(() => this.provider.value?.address.value);
@@ -52,7 +56,6 @@ export class ChainAccount<
         const { tx, executingOptions } = opts;
 
         const toast = useToast();
-        const client = useSuiClient();
 
         if (!this.provider.value) {
             toast.add({
@@ -76,7 +79,7 @@ export class ChainAccount<
             });
             const signedTx = await this.provider.value.signTransaction(tx);
             toast.remove("executing-transaction");
-            return await client.executeTransactionBlock({
+            return await this.client.executeTransactionBlock({
                 signature: signedTx.signature,
                 transactionBlock: signedTx.bytes,
                 options: executingOptions,

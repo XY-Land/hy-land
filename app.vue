@@ -2,7 +2,11 @@
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+    <UApp>
+        <AppContextProvider>
+            <NuxtLayout>
+                <NuxtPage />
+            </NuxtLayout>
+        </AppContextProvider>
+    </UApp>
 </template>

@@ -2,7 +2,7 @@
 import { PasskeyChainAccountResolver } from '~/utils/sui/accountResolver/passkey'
 const account = useChainAccount()
 const isOpen = ref(false)
-
+const client = useSuiClient()
 const emit = defineEmits<{ success: [] }>()
 
 const isPasskeySupported = ref(false)
@@ -13,7 +13,7 @@ onMounted(() => {
 })
 
 async function create() {
-    const provider = await PasskeyChainAccountResolver.new()
+    const provider = await PasskeyChainAccountResolver.new(client)
     account.setProvider(provider)
     isOpen.value = false
 
@@ -21,7 +21,7 @@ async function create() {
 }
 
 async function restore() {
-    const provider = await PasskeyChainAccountResolver.restore()
+    const provider = await PasskeyChainAccountResolver.restore(client)
     account.setProvider(provider)
     isOpen.value = false
 

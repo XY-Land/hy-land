@@ -1,4 +1,4 @@
-import type { TransactionEffects } from "@mysten/sui/client";
+import type { SuiClient, TransactionEffects } from "@mysten/sui/client";
 import { BaseChainAccountResolver } from "./base";
 import {
     BrowserPasskeyProvider,
@@ -21,6 +21,7 @@ function getPasskeyProvider() {
 }
 
 export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
+    private client: SuiClient;
     override readonly scheme = "passkey" as const;
     override readonly label = computed(() => "Passkey" as const);
     override readonly icon = computed(() => passkeyIcon);
@@ -29,9 +30,10 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
 
     private keypair: PasskeyKeypair;
 
-    constructor(keypair: PasskeyKeypair) {
+    constructor(keypair: PasskeyKeypair, client: SuiClient) {
         super();
 
+        this.client = client;
         this.keypair = keypair;
 
         this.address = computed(() => this.keypair.toSuiAddress());
@@ -40,7 +42,7 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
     }
 
     /** 创建一个新的 passkey 钱包 */
-    public static async new() {
+    public static async new(client: SuiClient) {
         const passkeyProvider = getPasskeyProvider();
 
         try {
@@ -48,7 +50,7 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
                 passkeyProvider
             );
 
-            return new PasskeyChainAccountResolver(keypair);
+            return new PasskeyChainAccountResolver(keypair, client);
         } catch (error) {
             useToast().add({
                 title: "Failed to create passkey account",
@@ -60,7 +62,7 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
     }
 
     /** 从恢复 passkey 钱包 */
-    public static async restore() {
+    public static async restore(client: SuiClient) {
         const passkeyProvider = getPasskeyProvider();
 
         const possiblePks = await PasskeyKeypair.signAndRecover(
@@ -79,7 +81,7 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
             passkeyProvider
         );
 
-        return new PasskeyChainAccountResolver(keypair);
+        return new PasskeyChainAccountResolver(keypair, client);
     }
 
     override async disconnect(): Promise<void> {}
@@ -95,7 +97,7 @@ export class PasskeyChainAccountResolver extends BaseChainAccountResolver {
     override async signTransaction(tx: Transaction) {
         return await this.keypair.signTransaction(
             await tx.build({
-                client: useSuiClient(),
+                client: this.client,
                 onlyTransactionKind: true,
             })
         );
