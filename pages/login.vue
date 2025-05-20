@@ -17,8 +17,8 @@ const loginSuccess = () => {
 <template>
     <div class="flex flex-col gap-8">
         <div class="flex h-full gap-2">
-            <UAvatar icon="i-heroicons-chevron-right"  size="xl" />
-            <h1 class="text-4xl">Login</h1>
+            <!-- <UAvatar icon="i-heroicons-chevron-right"  size="xl" /> -->
+            <h1 class="text-4xl font-bold">Login</h1>
         </div>
         <ByPasskey @success="loginSuccess" />
         <BySocial />
