@@ -6,10 +6,13 @@ const emit = defineEmits<{
     close: [boolean]
 }>()
 
-const props = defineProps(TransferCoinProps)
+const props = defineProps(
+    TransferCoinProps
+)
 
-const fundingAssets = useFundingAssets()
-const tradingAssets = useTradingAssets()
+// const { fundingAssets, tradingAssets } = toRefs(props)
+// const fundingAssets = useFundingAssets()
+// const tradingAssets = useTradingAssets()
 
 const tabs = ref([
     {
@@ -120,12 +123,12 @@ async function doTransfer() {
         tx,
     })
 
-    // refresh assets
-    if (currentTab.value === 'trading-account') {
-        tradingAssets.execute()
-    } else if (currentTab.value === 'funding-account') {
-        fundingAssets.execute()
-    }
+    // // refresh assets
+    // if (currentTab.value === 'trading-account') {
+    //     tradingAssets.value.execute()
+    // } else if (currentTab.value === 'funding-account') {
+    //     fundingAssets.value.execute()
+    // }
 
     emit('close', true)
 }
