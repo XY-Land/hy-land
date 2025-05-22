@@ -1,24 +1,19 @@
-# Nuxt Minimal Starter
+# HY.LAND
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A decentralized order book trading platform project  
 
-## Setup
+## Features
+1. zkLogin, Passkey Authentication, and SUI's Sponsor-Gas Technology:  
+   These innovations dramatically lower the entry barriers for Web2 users to participate in SUI's trading ecosystem.  
+2. Integration with SUI Ecosystem DApps:  
+   The platform connects seamlessly with other SUI-based decentralized applications, enabling users to manage their assets more effectively across the ecosystem.  
+3. Security and Censorship Resistance:  
+   Built with robust security protocols, the platform ensures asset protection and operates in a censorship-resistant environment.  
+4. Enhanced DeepBook Liquidity Utilization:  
+   By expanding the application of DeepBook's liquidity infrastructure, the platform optimizes trading efficiency and market depth.  
+5. High-Frequency Trading Support:  
+   Engineered for speed and scalability, the platform supports rapid transaction processing, catering to professional traders and institutional users.  
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
 
 ## Development Server
 
@@ -37,39 +32,3 @@ yarn dev
 # bun
 bun run dev
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
